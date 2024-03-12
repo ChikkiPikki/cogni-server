@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Controls page - Pseudobrains nanobot</title>
+    <script
+      src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+      integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="arrowKeys">Press an arrow key</div>
+    <script>
+      var socket = io("http://localhost:8080/");
+
+      const controls = {
+        front: 0,
+        reverse: 0,
+        right: 0,
+        left: 0,
+      };
+
+      document.addEventListener("keydown", function (event) {
+        var arrowKeys = document.getElementById("arrowKeys");
+        switch (event.key) {
+          case "ArrowUp":
+            arrowKeys.innerText = "↑";
+            socket.emit("controls", { ...controls, front: 1 });
+            break;
+          case "ArrowDown":
+            arrowKeys.innerText = "↓";
+            socket.emit("controls", { ...controls, reverse: 1 });
+            break;
+          case "ArrowLeft":
+            arrowKeys.innerText = "←";
+            socket.emit("controls", { ...controls, left: 1 });
+            break;
+          case "ArrowRight":
+            arrowKeys.innerText = "→";
+            socket.emit("controls", { ...controls, right: 1 });
+            break;
+          default:
+            arrowKeys.innerText = "Press an arrow key";
+            socket.emit("controls", { ...controls });
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>
